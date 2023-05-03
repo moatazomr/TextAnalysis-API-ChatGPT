@@ -75,3 +75,69 @@ The response is like :
   }
 ] 
 ```
+
+
+Here is sample python snippet to test calling actual ChatGPT based on generated prompt
+
+```Python
+prompts= [
+  {
+    "prompt": "Summarize the following sentence below, delimited by triple backticks, in at most `max_length`.",
+    "operation": "Summarization",
+    "parameters": {
+      "max_length": 50,
+      "temperature": 0.8
+    }
+  },
+  {
+    "prompt": "Infer the sentiment of the following sentence below, delimited by triple backticks: `input_text`.",
+    "operation": "Sentiment Analysis",
+    "parameters": {
+      "model": "bert-base",
+      "score_type": "polarity"
+    }
+  },
+  {
+    "prompt": "Translate the following sentence below, delimited by triple backticks, from `source_language` to `target_language`: `input_text`.",
+    "operation": "Language Translation",
+    "parameters": {
+      "source_language": "en",
+      "target_language": "es"
+    }
+  },
+  {
+    "prompt": "Answer the following question below, delimited by triple backticks, in at most `max_length`.",
+    "operation": "Question Answering",
+    "parameters": {
+      "model": "bert-large-uncased-whole-word-masking-finetuned-squad",
+      "max_length": 50
+    }
+  }
+]
+
+def generate_prompt(prompt, input_text, params):
+    # Replace any placeholders in the prompt with input_text and params
+    for key, value in params.items():
+        prompt = prompt.replace(key, str(value))
+    prompt = prompt.replace('input_text', input_text)
+    # Add triple backticks around the input_text
+    prompt = f'```{prompt}```'
+    return prompt
+
+param = {
+      "max_length": 50 ,
+    "source_language": "en",
+      "target_language": "ar"
+    }
+print(param)
+ 
+
+prompt = generate_prompt(prompts[2]['prompt'] ,prod_review , param )
+
+print(prompt)
+
+
+
+response = get_completion(prompt)
+print(response)
+```
