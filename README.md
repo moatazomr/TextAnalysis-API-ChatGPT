@@ -5,7 +5,7 @@
 
 **Introduction** 
 
-This project aims to create a comprehensive  wrapper API to cover common text analysis tasks by using ChatGPT  without having to worry about prompt engineering or other technical details. Simply input the text you want to analyze and let our API handle the rest. 
+This project aims to create a comprehensive API to cover common text analysis tasks by using ChatGPT  without having to worry about prompt engineering or other technical details. Simply input the text you want to analyze and let our API handle the rest. 
 
 To achieve this, I followed recursive approach by utilizing ChatGPT itself  to help in identifing its top text analsysis use cases can be done by ChatGPT  then what are sample prompts for it? then ask it to converted it into a user-friendly API to facilitate text analysis taks.
 
