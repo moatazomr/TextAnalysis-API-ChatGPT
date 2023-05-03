@@ -1,151 +1,330 @@
-swagger: '2.0'
+openapi: 3.0.0
 info:
-  version: '1.0'
-  title: Text Analysis API
-  description: API for performing various text analysis tasks using ChatGPT
-
-basePath: /text-analysis
-
+  title: Text Processing API
+  version: 1.0.0
+  description: |
+    This API provides a suite of text processing operations, including text completion, language modeling, text generation, text summarization, text correction, text normalization, text formatting, text clustering, text classification, named entity recognition, text similarity, sentiment analysis, text tagging, and text embedding.
+servers:
+  - url: http://localhost:8000
+    description: Local development server
 paths:
-  /summarize:
+  /text-completion:
     post:
-      summary: Summarize text
+      summary: Complete a given sentence
       description: |
-        Given a piece of text, generate a summary of the text.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: text
-          in: body
-          description: Text to summarize
-          required: true
-          schema:
-            type: object
-            properties:
-              text:
-                type: string
-                example: "The quick brown fox jumps over the lazy dog."
-              max_length:
-                type: integer
-                example: 50
-                description: "Maximum length of the summary in words"
+        Given a sentence with a missing word or words, this operation predicts the missing word(s) based on the context of the sentence.
+      requestBody:
+        description: The input sentence to complete
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick [MASK] jumps over the lazy dog."
+              required:
+                - input_text
       responses:
-        200:
-          description: Summary generated successfully
-          schema:
-            type: object
-            properties:
-              summary:
-                type: string
-                example: "The quick brown fox jumps over the lazy dog."
-
-  /sentiment:
+        '200':
+          description: The completed sentence
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_text:
+                    type: string
+                    example: "The quick brown fox jumps over the lazy dog."
+  /language-modeling:
     post:
-      summary: Analyze sentiment
+      summary: Train a language model on text data
       description: |
-        Given a piece of text, infer the sentiment polarity of the text.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: text
-          in: body
-          description: Text to analyze sentiment
-          required: true
-          schema:
-            type: object
-            properties:
-              text:
-                type: string
-                example: "This movie was terrible."
-              model:
-                type: string
-                example: "bert-base"
-                description: "The sentiment analysis model to use"
+        Given a corpus of text data, this operation trains a language model to predict the likelihood of the next word given the previous words in a sequence.
+      requestBody:
+        description: The input text data to train the language model on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brown fox jumps over the lazy dog."
+              required:
+                - input_text
       responses:
-        200:
-          description: Sentiment analyzed successfully
-          schema:
-            type: object
-            properties:
-              polarity:
-                type: string
-                example: "Negative"
-
-  /translate:
+        '200':
+          description: The trained language model
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  model_path:
+                    type: string
+                    example: "/models/language_model.pt"
+  /text-generation:
     post:
-      summary: Translate text
+      summary: Generate new text based on a given prompt
       description: |
-        Given a piece of text in a source language, translate the text to a target language.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: text
-          in: body
-          description: Text to translate
-          required: true
-          schema:
-            type: object
-            properties:
-              text:
-                type: string
-                example: "The quick brown fox jumps over the lazy dog."
-              source_language:
-                type: string
-                example: "en"
-                description: "Source language of the text"
-              target_language:
-                type: string
-                example: "fr"
-                description: "Target language to translate the text to"
+        Given a prompt, this operation generates new text that continues the prompt in a coherent and meaningful way.
+      requestBody:
+        description: The input prompt to generate text from
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brown fox"
+              required:
+                - input_text
       responses:
-        200:
-          description: Text translated successfully
-          schema:
-            type: object
-            properties:
-              translation:
-                type: string
-                example: "Le rapide renard brun saute par-dessus le chien paresseux."
-
-  /qa:
+        '200':
+          description: The generated text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_text:
+                    type: string
+                    example: "The quick brown fox jumps over the lazy dog."
+  /text-summarization:
     post:
-      summary: Answer question
+      summary: Summarize a given text
       description: |
-        Given a question and a piece of text, generate an answer to the question based on the text.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: question
-          in: body
-          description: Question to answer
-          required: true
-          schema:
-            type: object
-            properties:
-              question:
-                type: string
-                example: "What color is the fox?"
-              text:
-                type: string
-                example: "The quick brown fox jumps over the lazy dog."
-              max_length:
-                type: integer
-                example: 50
-                description: "Maximum length of the answer in words"
+        Given a text, this operation generates a shorter summary of the text that captures the main points and ideas.
+      requestBody:
+        description: The input text to summarize
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brown fox jumps over the lazy dog."
+              required:
+                - input_text
       responses:
-        200:
-          description: Question answered successfully
-          schema:
-            type: object
-            properties:
-              answer:
-                type: string
-                example: "brown"
+        '200':
+          description: The summarized text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_text:
+                    type: string
+                    example: "A quick brown fox jumps over a lazy dog."
+  /text-correction:
+    post:
+      summary: Correct the spelling, grammar, and punctuation errors in a given text
+      description: |
+        Given a text with spelling, grammar, and/or punctuation errors, this operation corrects the errors and returns the corrected text.
+      requestBody:
+        description: The input text to correct
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brwn fox jumps over the lazy dog."
+              required:
+                - input_text
+      responses:
+        '200':
+          description: The corrected text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_text:
+                    type: string
+                    example: "The quick brown fox jumps over the lazy dog."
+  /text-normalization:
+    post:
+      summary: Normalize a given text
+      description: |
+        Given a text, this operation normalizes the text to a standard format by converting numbers, dates, and other entities to a canonical form.
+      requestBody:
+        description: The input text to normalize
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brown fox jumps over the lazy dog on 12/31/2022."
+              required:
+                - input_text
+      responses:
+        '200':
+          description: The normalized text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_text:
+                    type: string
+                    example: "The quick brown fox jumps over the lazy dog on December 31, 2022."
+  /text-formatting:
+    post:
+      summary: Format a given text in a specified way
+      description: |
+        Given a text and a set of formatting instructions, this operation formats the text according to the instructions.
+      requestBody:
+        description: The input text to format and the formatting instructions
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brown fox jumps over the lazy dog."
+                format:
+                  type: object
+                  example: {"uppercase": true, "reverse": true}
+              required:
+                - input_text
+      responses:
+        '200':
+          description: The formatted text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_text:
+                    type: string
+                    example: "GOD YZAL EHT REVO SPMuj NWORB KCIUQ EHT."
+  /text-clustering:
+    post:
+      summary: Cluster a given set of texts
+      description: |
+        Given a set of texts, this operation clusters the texts into groups based on their similarity.
+      requestBody:
+        description: The set of input texts to cluster
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_texts:
+                  type: array
+                  items:
+                    type: string
+                    example: ["The quick brown fox", "jumps over the lazy dog."]
+              required:
+                - input_texts
+      responses:
+        '200':
+          description: The clusters of texts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clusters:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: string
+                        example: ["The quick brown fox"]
+  /text-classification:
+    post:
+      summary: Classify a given text into categories
+      description: |
+        Given a text and a set of categories, this operation classifies the text into one or more categories based on its content.
+      requestBody:
+        description: The input text to classify and the set of categories
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "The quick brown fox jumps over the lazy dog."
+                categories:
+                  type: array
+                  items:
+                    type: string
+                    example: ["animals", "sports"]
+              required:
+                - input_text
+      responses:
+        '200':
+          description: The categories of the text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      type: string
+                      example: ["animals"]
+  /named-entity-recognition:
+    post:
+      summary: Extract the named entities from a given text
+      description: |
+        Given a text, this operation extracts the named entities such as people, organizations, and locations from the text.
+      requestBody:
+        description: The input text to extract named entities from
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input_text:
+                  type: string
+                  example: "Barack Obama was born in Hawaii in 1961."
+              required:
+                - input_text
+      responses:
+        '200':
+          description: The named entities in the text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  named_entities:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          example: "person"
+                        entity_text:
+                          type: string
+                          example: "Barack Obama"
+                        start_index:
+                          type: integer
+                          example: 0
+                        end_index:
+                          type: integer
+                          example: 12
