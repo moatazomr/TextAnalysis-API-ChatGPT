@@ -8,24 +8,19 @@ servers:
   - url: http://localhost:8000
     description: Local development server
 paths:
-  /text-completion:
-    post:
+  /textCompletion:
+    get:
       summary: Complete a given sentence
       description: |
         Given a sentence with a missing word or words, this operation predicts the missing word(s) based on the context of the sentence.
-      requestBody:
-        description: The input sentence to complete
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick [MASK] jumps over the lazy dog."
-              required:
-                - input_text
+      parameters:
+        - name: inputText
+          in: query
+          description: The input sentence to complete
+          required: true
+          schema:
+            type: string
+            example: "The quick [MASK] jumps over the lazy dog."
       responses:
         '200':
           description: The completed sentence
@@ -34,27 +29,29 @@ paths:
               schema:
                 type: object
                 properties:
-                  output_text:
+                  outputText:
                     type: string
                     example: "The quick brown fox jumps over the lazy dog."
-  /language-modeling:
-    post:
+  /languageModeling:
+    get:
       summary: Train a language model on text data
       description: |
         Given a corpus of text data, this operation trains a language model to predict the likelihood of the next word given the previous words in a sequence.
-      requestBody:
-        description: The input text data to train the language model on
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brown fox jumps over the lazy dog."
-              required:
-                - input_text
+      parameters:
+        - name: inputText
+          in: query
+          description: The input text data to train the language model on
+          required: true
+          schema:
+            type: string
+            example: "The quick brown fox jumps over the lazy dog."
+        - name: modelPath
+          in: query
+          description: The path to save the trained language model
+          required: true
+          schema:
+            type: string
+            example: "/models/language_model.pt"
       responses:
         '200':
           description: The trained language model
@@ -63,27 +60,36 @@ paths:
               schema:
                 type: object
                 properties:
-                  model_path:
+                  modelPath:
                     type: string
                     example: "/models/language_model.pt"
-  /text-generation:
-    post:
+  /textGeneration:
+    get:
       summary: Generate new text based on a given prompt
       description: |
         Given a prompt, this operation generates new text that continues the prompt in a coherent and meaningful way.
-      requestBody:
-        description: The input prompt to generate text from
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brown fox"
-              required:
-                - input_text
+      parameters:
+        - name: inputText
+          in: query
+          description: The input prompt to generate text from
+          required: true
+          schema:
+            type: string
+            example: "The quick brown fox"
+        - name: maxOutputLength
+          in: query
+          description: The maximum length of the generated text
+          required: true
+          schema:
+            type: integer
+            example: 50
+        - name: temperature
+          in: query
+          description: The temperature of the generation process (higher temperature results in more random and diverse text)
+          required: true
+          schema:
+            type: number
+            example: 0.5
       responses:
         '200':
           description: The generated text
@@ -92,56 +98,53 @@ paths:
               schema:
                 type: object
                 properties:
-                  output_text:
+                  outputText:
                     type: string
-                    example: "The quick brown fox jumps over the lazy dog."
-  /text-summarization:
-    post:
+                    example: "The quick brown fox jumps over the lazy dog. The cat is sleeping on the windowsill."
+  /textSummarization:
+    get:
       summary: Summarize a given text
       description: |
-        Given a text, this operation generates a shorter summary of the text that captures the main points and ideas.
-      requestBody:
-        description: The input text to summarize
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brown fox jumps over the lazy dog."
-              required:
-                - input_text
+        Given a text, this operation generates a summary of the text that captures its main points and key information.
+      parameters:
+        - name: inputText
+          in: query
+          description: The input text to summarize
+          required: true
+          schema:
+            type: string
+            example: "The quick brown fox jumps over the lazy dog. The cat is sleeping on the windowsill. The dog barks at the mailman every morning."
+        - name: maxSummaryLength
+          in: query
+          description: The maximum length of the summary
+          required: true
+          schema:
+            type: integer
+            example: 50
       responses:
         '200':
-          description: The summarized text
+          description: The summary of the input text
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  output_text:
+                  outputText:
                     type: string
-                    example: "A quick brown fox jumps over a lazy dog."
-  /text-correction:
-    post:
-      summary: Correct the spelling, grammar, and punctuation errors in a given text
+                    example: "A quick brown fox jumps over a lazy dog. A cat is sleeping on a windowsill."
+  /textCorrection:
+    get:
+      summary: Correct spelling and grammar errors in a given text
       description: |
-        Given a text with spelling, grammar, and/or punctuation errors, this operation corrects the errors and returns the corrected text.
-      requestBody:
-        description: The input text to correct
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brwn fox jumps over the lazy dog."
-              required:
-                - input_text
+        Given a text with spelling and grammar errors, this operation corrects the errors and returns the corrected text.
+      parameters:
+        - name: inputText
+          in: query
+          description: The input text to correct
+          required: true
+          schema:
+            type: string
+            example: "I has a dog. He like to play."
       responses:
         '200':
           description: The corrected text
@@ -150,27 +153,22 @@ paths:
               schema:
                 type: object
                 properties:
-                  output_text:
+                  outputText:
                     type: string
-                    example: "The quick brown fox jumps over the lazy dog."
-  /text-normalization:
-    post:
+                    example: "I have a dog. He likes to play."
+  /textNormalization:
+    get:
       summary: Normalize a given text
       description: |
-        Given a text, this operation normalizes the text to a standard format by converting numbers, dates, and other entities to a canonical form.
-      requestBody:
-        description: The input text to normalize
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brown fox jumps over the lazy dog on 12/31/2022."
-              required:
-                - input_text
+        Given a text, this operation normalizes the text by removing special characters, converting all letters to lowercase, etc.
+      parameters:
+        - name: inputText
+          in: query
+          description: The input text to normalize
+          required: true
+          schema:
+            type: string
+            example: "The quick, brown fox jumps over the lazy dog!"
       responses:
         '200':
           description: The normalized text
@@ -179,30 +177,29 @@ paths:
               schema:
                 type: object
                 properties:
-                  output_text:
+                  outputText:
                     type: string
-                    example: "The quick brown fox jumps over the lazy dog on December 31, 2022."
-  /text-formatting:
-    post:
-      summary: Format a given text in a specified way
+                    example: "the quick brown fox jumps over the lazy dog"
+  /textFormatting:
+    get:
+      summary: Format a given text
       description: |
-        Given a text and a set of formatting instructions, this operation formats the text according to the instructions.
-      requestBody:
-        description: The input text to format and the formatting instructions
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brown fox jumps over the lazy dog."
-                format:
-                  type: object
-                  example: {"uppercase": true, "reverse": true}
-              required:
-                - input_text
+        Given a text, this operation formats the text by adding line breaks, indentations, etc.
+      parameters:
+        - name: inputText
+          in: query
+          description: The input text to format
+          required: true
+          schema:
+            type: string
+            example: "The quick brown fox jumps over the lazy dog. The cat is sleeping on the windowsill. The dog barks at the mailman every morning."
+        - name: formatType
+          in: query
+          description: The type of formatting to apply (e.g. "paragraph", "bullet points", etc.)
+          required: true
+          schema:
+            type: string
+            example: "paragraph"
       responses:
         '200':
           description: The formatted text
@@ -211,32 +208,34 @@ paths:
               schema:
                 type: object
                 properties:
-                  output_text:
+                  outputText:
                     type: string
-                    example: "GOD YZAL EHT REVO SPMuj NWORB KCIUQ EHT."
-  /text-clustering:
-    post:
+                    example: "The quick brown fox jumps over the lazy dog.\n\nThe cat is sleeping on the windowsill.\n\nThe dog barks at the mailman every morning."
+  /textClustering:
+    get:
       summary: Cluster a given set of texts
       description: |
-        Given a set of texts, this operation clusters the texts into groups based on their similarity.
-      requestBody:
-        description: The set of input texts to cluster
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_texts:
-                  type: array
-                  items:
-                    type: string
-                    example: ["The quick brown fox", "jumps over the lazy dog."]
-              required:
-                - input_texts
+        Given a set of texts, this operation clusters the texts based on their similarity.
+      parameters:
+        - name: inputTexts
+          in: query
+          description: The input texts to cluster
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["The quick brown fox jumps over the lazy dog.", "The cat is sleeping on the windowsill.", "The dog barks at the mailman every morning."]
+        - name: numClusters
+          in: query
+          description: The number of clusters to generate
+          required: true
+          schema:
+            type: integer
+            example: 2
       responses:
         '200':
-          description: The clusters of texts
+          description: The clusters of the input texts
           content:
             application/json:
               schema:
@@ -248,83 +247,39 @@ paths:
                       type: array
                       items:
                         type: string
-                        example: ["The quick brown fox"]
-  /text-classification:
-    post:
-      summary: Classify a given text into categories
+                    example: [["The quick brown fox jumps over the lazy dog.", "The cat is sleeping on the windowsill."], ["The dog barks at the mailman every morning."]]
+  /textClassification:
+    get:
+      summary: Classify a given text
       description: |
-        Given a text and a set of categories, this operation classifies the text into one or more categories based on its content.
-      requestBody:
-        description: The input text to classify and the set of categories
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "The quick brown fox jumps over the lazy dog."
-                categories:
-                  type: array
-                  items:
-                    type: string
-                    example: ["animals", "sports"]
-              required:
-                - input_text
+        Given a text, this operation classifies the text into one or more categories based on its content.
+      parameters:
+        - name: inputText
+          in: query
+          description: The input text to classify
+          required: true
+          schema:
+            type: string
+            example: "The quick brown fox jumps over the lazy dog. The cat is sleeping on the windowsill. The dog barks at the mailman every morning."
+        - name: categories
+          in: query
+          description: The categories to classify the text into
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["animals", "daily life"]
       responses:
         '200':
-          description: The categories of the text
+          description: The classification of the input text
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  categories:
+                  classification:
                     type: array
                     items:
                       type: string
-                      example: ["animals"]
-  /named-entity-recognition:
-    post:
-      summary: Extract the named entities from a given text
-      description: |
-        Given a text, this operation extracts the named entities such as people, organizations, and locations from the text.
-      requestBody:
-        description: The input text to extract named entities from
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                input_text:
-                  type: string
-                  example: "Barack Obama was born in Hawaii in 1961."
-              required:
-                - input_text
-      responses:
-        '200':
-          description: The named entities in the text
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  named_entities:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          example: "person"
-                        entity_text:
-                          type: string
-                          example: "Barack Obama"
-                        start_index:
-                          type: integer
-                          example: 0
-                        end_index:
-                          type: integer
-                          example: 12
+                    example: ["animals"]
