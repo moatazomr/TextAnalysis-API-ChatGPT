@@ -1,0 +1,111 @@
+[
+  {
+    "prompt": "Generate the most likely continuation or next word(s) for the following prompt, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Text Completion",
+    "parameters": {
+      "max_length": 50,
+      "temperature": 0.8
+    }
+  },
+  {
+    "prompt": "Train a language model on the following text corpus, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Language Modeling",
+    "parameters": {
+      "model": "gpt2-medium",
+      "num_epochs": 5
+    }
+  },
+  {
+    "prompt": "Generate new text based on the following prompt or context, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Text Generation",
+    "parameters": {
+      "model": "gpt2-medium",
+      "max_length": 50,
+      "temperature": 0.8
+    }
+  },
+  {
+    "prompt": "Generate a summary of the following longer text, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Text Summarization",
+    "parameters": {
+      "max_length": 50,
+      "min_length": 20
+    }
+  },
+  {
+    "prompt": "Correct spelling, grammar, and punctuation errors in the following text, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Text Correction",
+    "parameters": {
+      "model": "gpt2",
+      "max_length": 50
+    }
+  },
+  {
+    "prompt": "Normalize the following text to a standard format, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Text Normalization",
+    "parameters": {
+      "language": "en",
+      "format": "date"
+    }
+  },
+  {
+    "prompt": "Format the following text in a specific way, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Text Formatting",
+    "parameters": {
+      "format": "title-case"
+    }
+  },
+  {
+    "prompt": "Group similar texts together based on their content or features, given the following list of texts:\n\n```\n`input_text`\n```",
+    "operation": "Text Clustering",
+    "parameters": {
+      "algorithm": "k-means",
+      "num_clusters": 5
+    }
+  },
+  {
+    "prompt": "Categorize the following text into predefined classes or categories based on its content or features, using the following predefined categories:\n\n```\n`input_text`\n```",
+    "operation": "Text Classification",
+    "parameters": {
+      "model": "bert-base-uncased",
+      "categories": ["sports", "politics", "entertainment"]
+    }
+  },
+  {
+    "prompt": "Identify and extract named entities such as people, organizations, and locations from the following text, delimited by triple backticks:\n\n```\n`input_text`\n```",
+    "operation": "Named Entity Recognition",
+    "parameters": {
+      "model": "bert-base-uncased"
+    }
+  },
+  {
+    "prompt": "Measure the similarity between the following texts based on their content or features:\n\n```\n`input_text`\n```",
+    "operation": "Text Similarity",
+    "parameters": {
+      "model": "bert-base-uncased"
+    }
+  },
+  {
+    "prompt": "Analyze the sentiment or emotion expressed in the following text and categorize it as positive, negative, or neutral, using the following model and score type:\n\n```\n`input_text`\n```",
+    "operation": "Sentiment Analysis",
+    "parameters": {
+      "model": "bert-base-uncased",
+      "score_type": "polarity"
+    }
+  },
+  {
+    "prompt": "Assign tags or labels to different parts of the following text, such as parts of speech or semantic categories:\n\n```\n`input_text`\n```",
+    "operation": "Text Tagging",
+    "parameters": {
+      "model": "spacy",
+      "tag_type": "POS"
+    }
+  },
+  {
+    "prompt": "Represent the following text as a numerical vector in a high-dimensional space, which can be used for various downstream tasks such as text classification and clustering:\n\n```\n`input_text`\n```",
+    "operation": "Text Embedding",
+    "parameters": {
+      "model": "bert-base-uncased"
+    }
+  }
+]
