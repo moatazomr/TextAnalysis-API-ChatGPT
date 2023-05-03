@@ -1,0 +1,151 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Text Analysis API
+  description: API for performing various text analysis tasks using ChatGPT
+
+basePath: /text-analysis
+
+paths:
+  /summarize:
+    post:
+      summary: Summarize text
+      description: |
+        Given a piece of text, generate a summary of the text.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: text
+          in: body
+          description: Text to summarize
+          required: true
+          schema:
+            type: object
+            properties:
+              text:
+                type: string
+                example: "The quick brown fox jumps over the lazy dog."
+              max_length:
+                type: integer
+                example: 50
+                description: "Maximum length of the summary in words"
+      responses:
+        200:
+          description: Summary generated successfully
+          schema:
+            type: object
+            properties:
+              summary:
+                type: string
+                example: "The quick brown fox jumps over the lazy dog."
+
+  /sentiment:
+    post:
+      summary: Analyze sentiment
+      description: |
+        Given a piece of text, infer the sentiment polarity of the text.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: text
+          in: body
+          description: Text to analyze sentiment
+          required: true
+          schema:
+            type: object
+            properties:
+              text:
+                type: string
+                example: "This movie was terrible."
+              model:
+                type: string
+                example: "bert-base"
+                description: "The sentiment analysis model to use"
+      responses:
+        200:
+          description: Sentiment analyzed successfully
+          schema:
+            type: object
+            properties:
+              polarity:
+                type: string
+                example: "Negative"
+
+  /translate:
+    post:
+      summary: Translate text
+      description: |
+        Given a piece of text in a source language, translate the text to a target language.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: text
+          in: body
+          description: Text to translate
+          required: true
+          schema:
+            type: object
+            properties:
+              text:
+                type: string
+                example: "The quick brown fox jumps over the lazy dog."
+              source_language:
+                type: string
+                example: "en"
+                description: "Source language of the text"
+              target_language:
+                type: string
+                example: "fr"
+                description: "Target language to translate the text to"
+      responses:
+        200:
+          description: Text translated successfully
+          schema:
+            type: object
+            properties:
+              translation:
+                type: string
+                example: "Le rapide renard brun saute par-dessus le chien paresseux."
+
+  /qa:
+    post:
+      summary: Answer question
+      description: |
+        Given a question and a piece of text, generate an answer to the question based on the text.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: question
+          in: body
+          description: Question to answer
+          required: true
+          schema:
+            type: object
+            properties:
+              question:
+                type: string
+                example: "What color is the fox?"
+              text:
+                type: string
+                example: "The quick brown fox jumps over the lazy dog."
+              max_length:
+                type: integer
+                example: 50
+                description: "Maximum length of the answer in words"
+      responses:
+        200:
+          description: Question answered successfully
+          schema:
+            type: object
+            properties:
+              answer:
+                type: string
+                example: "brown"
